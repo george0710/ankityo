@@ -1,0 +1,16 @@
+version: '3'
+services:
+  vue_app:
+    build: docker/vue/
+    ports:
+      - 8081:8080
+    volumes:
+      - .:/app:cached
+      # 以下はマウントさせたくないPATH
+      - /app/node_modules
+      - /app/src-cordova
+      - /docker
+    stdin_open: true
+    tty: true
+    # /bin/sh -c はコマンドを複数実行したいときに使用
+    entrypoint: /bin/sh -c "npm install && npm run serve"
