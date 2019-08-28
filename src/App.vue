@@ -1,10 +1,13 @@
 <template>
-  <div id="app">
-    <div class="main-content">
-      <router-view />
-    </div>
+  <v-app>
+    <v-content>
+      <v-container fluid>
+        <router-view />
+      </v-container>
+    </v-content>
+    <!-- <v-footer app /> -->
     <FootNav />
-  </div>
+  </v-app>
 </template>
 
 <script>

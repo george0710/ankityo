@@ -11,12 +11,10 @@
         color="teal"
         height="48"
       >
-        <v-btn>
+        <v-btn
+          @click="$router.push({name: 'Home'})"
+        >
           <v-icon>home</v-icon>
-        </v-btn>
-
-        <v-btn>
-          <v-icon>search</v-icon>
         </v-btn>
 
         <v-btn>
@@ -24,7 +22,11 @@
         </v-btn>
 
         <v-btn>
-          <v-icon>settings_applications</v-icon>
+          <v-icon>book</v-icon>
+        </v-btn>
+
+        <v-btn>
+          <v-icon>perm_identity</v-icon>
         </v-btn>
       </v-bottom-navigation>
     </v-footer>

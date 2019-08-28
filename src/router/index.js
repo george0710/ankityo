@@ -4,16 +4,35 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
-import Login from '@/components/Login.vue';
-import HelloWorld from '@/components/home/HelloWorld.vue';
+import Home from '@/components/home/Home.vue';
+import SearchDetail from '@/components/home/SearchDetail.vue';
+import SearchResult from '@/components/home/SearchResult.vue';
+
+import Test from '@/components/Test.vue';
 
 export default new Router({
   // mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'Home',
+      component: Home
+    },
+    {
+      path: '/search',
+      name: 'SearchDetail',
+      component: SearchDetail
+    },
+    {
+      path: '/search-result/:word',
+      name: 'SearchResult',
+      component: SearchResult,
+      props: true
+    },
+    {
+      path: '/test',
+      name: 'Test',
+      component: Test
     }
   ]
 });
