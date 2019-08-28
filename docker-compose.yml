@@ -3,7 +3,7 @@ services:
   vue_app:
     build: docker/vue/
     ports:
-      - 8081:8080
+      - 8080:8080
     volumes:
       - .:/app:cached
       # 以下はマウントさせたくないPATH
