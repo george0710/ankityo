@@ -14,7 +14,7 @@ export default {
     checkbox : {
       type : Object,
       required : true,
-      default : ''
+      default : () => {null;}
     }
   }
 };

@@ -54,7 +54,7 @@ export default {
     selectedChips: {
       type: Array,
       required: false,
-      default: []
+      default: () => {[];}
     },
   },
   data: () => ({

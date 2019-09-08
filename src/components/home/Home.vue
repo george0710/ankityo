@@ -14,8 +14,11 @@
     </v-layout>
     <CardSlideGroups />
 
-    　<v-btn @click="login">
+    <v-btn @click="login">
       ログイン
+    </v-btn>
+    <v-btn @click="logout">
+      ログアウト
     </v-btn>
   </div>
 </template>
@@ -23,7 +26,7 @@
 <script>
 import SearchBar from '@/components/home/SearchBar.vue';
 import CardSlideGroups from '@/components/common/CardSlideGroups.vue';
-import {mapAction} from 'vuex';
+import {mapActions} from 'vuex';
 
 
 export default {
@@ -33,10 +36,10 @@ export default {
     CardSlideGroups
   },
   created() {
-    FastClick.attach(document.body);
+    // FastClick.attach(document.body);
   },
   methods: {
-    ...mapAction(['login'])
+    ...mapActions(['login','logout'])
   }
 };
 </script>

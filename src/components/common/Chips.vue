@@ -5,6 +5,7 @@
   >
     <v-chip
       v-for="(chip,index) in chips"
+      :key="index"
       :close="close"
       @click:close="$emit('chip-close',index)"
       @click="$emit('chip-click',chip)"
@@ -19,13 +20,14 @@ export default {
   name: 'Chips',
   props:{
     chips:{
+      type:Array,
       require:true,
-      value:[]
+      default:() => {[];}
     },
     close:{
       type:Boolean,
       require:false,
-      value:false
+      default:false
     },
   },
 

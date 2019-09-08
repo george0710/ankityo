@@ -8,7 +8,6 @@
     <Chips
       :chips="selectedChips"
       close
-      @chip-click=""
       @chip-close="closeChip"
     />
   </div>
@@ -26,7 +25,7 @@ export default {
     selectedChips:{
       type: Array,
       required: false,
-      default: []
+      default: () => {[];}
     },
   },
   methods: {

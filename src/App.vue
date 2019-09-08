@@ -14,6 +14,8 @@
 import router from './router';
 import store from './store';
 
+import firebase from 'firebase';
+import {mapActions} from 'vuex';
 import FootNav from '@/components/FootNav.vue';
 
 export default {
@@ -22,7 +24,22 @@ export default {
     FootNav
   },
   router,
-  store
+  store,
+  created() {
+    //ログインやログアウトを検知したら呼ばれるように設定する。
+    firebase.auth().onAuthStateChanged(user => {
+      if(user) {
+        //ログインした
+        this.setLoginUser(user);
+      } else {
+        //ログアウトした
+        this.deleteLoginUser(user);
+      }
+    });
+  },
+  methods: {
+    ...mapActions(['setLoginUser','deleteLoginUser'])
+  }
 };
 </script>
 
