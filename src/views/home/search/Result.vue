@@ -25,23 +25,21 @@
       </v-row>
     </v-container>
 
-    <WordDetail ref="wordModal" />
+    <WordModal ref="wordModal" />
   </div>
 </template>
 
 <script>
-import SearchBar from '@/components/home/SearchBar.vue';
-import Chips from '@/components/common/Chips.vue';
-import Word from '@/components/common/Word.vue';
-import WordDetail from '@/components/common/WordDetail.vue';
-import SelectedChips from '@/components/home/SelectedChips.vue';
+import SearchBar from '@/components/search/Bar.vue';
+import Word from '@/components/word/Card.vue';
+import WordModal from '@/components/word/Modal.vue';
+import SelectedChips from '@/components/chip/SelectedList.vue';
 
 export default {
   name: 'SearchResult',
   components: {
     SearchBar,
-    Chips,
-    WordDetail,
+    WordModal,
     Word,
     SelectedChips
   },

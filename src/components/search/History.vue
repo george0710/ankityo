@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import Chips from '@/components/common/Chips.vue';
+import Chips from '@/components/chip/List.vue';
 
 export default {
   name: 'SearchHistory',

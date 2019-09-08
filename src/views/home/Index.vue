@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import SearchBar from '@/components/home/SearchBar.vue';
-import CardSlideGroups from '@/components/common/CardSlideGroups.vue';
+import SearchBar from '@/components/search/Bar.vue';
+import CardSlideGroups from '@/components/word/CardSlideGroups.vue';
 import {mapActions} from 'vuex';
 
 

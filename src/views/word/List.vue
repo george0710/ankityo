@@ -23,7 +23,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <WordDetail
+    <WordModal
       ref="wordModal"
       is-word
     />
@@ -34,13 +34,13 @@
 </template>
 
 <script>
-import WordDetail from '@/components/common/WordDetail.vue';
-import WordListBar from '@/components/wordbook/WordListBar';
+import WordModal from '@/components/word/Modal.vue';
+import WordListBar from '@/components/word/Bar';
 import AddIcon from '@/components/common/AddIcon';
 export default {
   name: 'WordList',
   components: {
-    WordDetail,
+    WordModal,
     WordListBar,
     AddIcon
   },

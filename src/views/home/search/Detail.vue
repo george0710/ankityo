@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import SearchHistory from '@/components/home/SearchHistory.vue';
-import Chips from '@/components/common/Chips.vue';
+import SearchHistory from '@/components/search/History.vue';
+import Chips from '@/components/chip/List.vue';
 
 export default {
   name: 'SearchDetail',

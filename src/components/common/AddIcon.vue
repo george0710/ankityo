@@ -25,8 +25,8 @@
 
 <script>
 //TODO; モーダルで表示するコンポーネントを切り離す。
-import FormWordBook from '@/components/wordbook/FormWordBook.vue';
-import FormWord from '@/components/wordbook/FormWord.vue';
+import FormWordBook from '@/components/word/book/Form.vue';
+import FormWord from '@/components/word/Form.vue';
 export default {
   name: 'AddIcon',
   components: {

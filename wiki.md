@@ -29,8 +29,8 @@
   /tag
     ・chips
     ・selectedChips
-    
-/pages
+
+/views
   /Home
     ・index
     /seach

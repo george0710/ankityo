@@ -31,19 +31,19 @@
         </v-card>
       </v-slide-item>
     </v-slide-group>
-    <WordDetail ref="wordModal" />
+    <WordModal ref="wordModal" />
   </v-sheet>
 </template>
 
 <script>
-import Word from '@/components/common/Word.vue';
-import WordDetail from '@/components/common/WordDetail.vue';
+import Word from '@/components/word/Card.vue';
+import WordModal from '@/components/word/Modal.vue';
 
 export default {
   name:'CardSlideGroups',
   components:{
     Word,
-    WordDetail
+    WordModal
   },
   data: () => ({
     model: null,

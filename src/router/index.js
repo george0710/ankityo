@@ -4,16 +4,16 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
-import Home from '@/components/home/Home.vue';
-import ChartContainer from '@/components/chart/ChartContainer.vue';
-import WordBook from '@/components/wordbook/WordBook.vue';
-import WordList from '@/components/wordbook/WordList.vue';
-import Study from '@/components/wordbook/Study.vue';
-import WordBookDetail from '@/components/wordbook/WordBookDetail.vue';
-import SearchDetail from '@/components/home/SearchDetail.vue';
-import SearchResult from '@/components/home/SearchResult.vue';
+import Home from '@/views/home/Index.vue';
+import ChartContainer from '@/views/chart/Index.vue';
+import WordBook from '@/views/word/book/Index.vue';
+import WordList from '@/views/word/List.vue';
+import Study from '@/views/word/book/Study.vue';
+import WordBookDetail from '@/views/word/book/Detail.vue';
+import SearchDetail from '@/views/home/search/Detail.vue';
+import SearchResult from '@/views/home/search/Result.vue';
 
-import Test from '@/components/FormModalTest.vue';
+// import Test from '@/components/FormModalTest.vue';
 
 export default new Router({
   // mode: 'history',
@@ -62,11 +62,11 @@ export default new Router({
       name: 'Study',
       component: Study,
       props: true
-    },
-    {
-      path: '/test',
-      name: 'Test',
-      component: Test
     }
+    // ,{
+    //   path: '/test',
+    //   name: 'Test',
+    //   component: Test
+    // }
   ]
 });
