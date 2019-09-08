@@ -9,12 +9,12 @@
           large
           @click="$router.push({ name: 'Home' })"
         >
-          keyboard_arrow_left
+          arrow_back_ios
         </v-icon>
       </v-col>
       <v-col cols="10">
         <v-text-field
-          v-model="searchWord"
+          v-model="inputSearchWord"
           class="mx-4"
           flat
           hide-details
@@ -26,8 +26,27 @@
         />
       </v-col>
     </v-row>
+    <v-layout class="justify-start">
+      <h3>
+        選択中のタグ
+      </h3>
+    </v-layout>
+    <Chips
+      :chips="selectedChips"
+      close
+      @chip-click=""
+      @chip-close="closeChip"
+    />
 
-    <Chips />
+    <v-layout class="justify-start">
+      <h3>
+        直近で検索されたタグ
+      </h3>
+    </v-layout>
+    <Chips
+      :chips="searchedChips"
+      @chip-click="addChip"
+    />
 
     <v-layout class="justify-start">
       <h3>
@@ -36,9 +55,10 @@
     </v-layout>
     <v-row>
       <v-col cols="12">
-        <SearchHistory />
+        <SearchHistory
+          @chip-click="addChip"
+        />
       </v-col>
-    </v-row>
     </v-row>
   </div>
 </template>
@@ -53,6 +73,17 @@ export default {
     SearchHistory,
     Chips
   },
+  props:{
+    searchWord: {
+      type: String,
+      default: ''
+    },
+    selectedChips: {
+      type: Array,
+      required: false,
+      default: []
+    },
+  },
   data: () => ({
     tags: [
       'Work',
@@ -65,13 +96,37 @@ export default {
       'Tech',
       'Creative Writing',
     ],
-    searchWord: ''
+    inputSearchWord: '',
+    searchedChips:[]
   }),
+  created() {
+    this.inputSearchWord = this.searchWord;
+
+    //
+    this.searchedChips.push({name:'tag1'});
+    this.searchedChips.push({name:'tag2'});
+    this.searchedChips.push({name:'tag3'});
+    this.searchedChips.push({name:'tag4'});
+  },
   methods: {
     search() {
-      //call search api
-      this.$router.push({name: 'SearchResult',params : { word: this.searchWord }});
+      this.$router.push(
+        {
+          name: 'SearchResult',
+          params : {
+            searchWord: this.inputSearchWord,
+            selectedChips:this.selectedChips
+          }
+        }
+      );
+    },
+    addChip(chip) {
+      this.selectedChips.push(chip);
+    },
+    closeChip(index) {
+      this.selectedChips.splice(index,1);
     }
+
   }
 };
 </script>

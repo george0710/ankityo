@@ -3,29 +3,32 @@
     active-class="primary--text"
     multiple
   >
-    <v-chip>
-      Default1
-    </v-chip>
-
-    <v-chip>
-      Default2
-    </v-chip>
-
-    <v-chip>
-      Default3
-    </v-chip>
-    <v-chip>
-      Default4
-    </v-chip>
-    <v-chip>
-      Default5
+    <v-chip
+      v-for="(chip,index) in chips"
+      :close="close"
+      @click:close="$emit('chip-close',index)"
+      @click="$emit('chip-click',chip)"
+    >
+      {{ chip.name }}
     </v-chip>
   </v-chip-group>
 </template>
 
 <script>
 export default {
-  name: 'Chips'
+  name: 'Chips',
+  props:{
+    chips:{
+      require:true,
+      value:[]
+    },
+    close:{
+      type:Boolean,
+      require:false,
+      value:false
+    },
+  },
+
 };
 </script>
 

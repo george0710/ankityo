@@ -1,7 +1,10 @@
 <template>
   <div class="search-results">
-    <SearchBar :word="word" />
-    <Chips />
+    <SearchBar
+      :search-word="searchWord"
+      :selected-chips="selectedChips"
+    />
+    <SelectedChips :selected-chips="selectedChips" />
 
     <v-container
       class="pa-2"
@@ -9,27 +12,15 @@
     >
       <v-row>
         <v-col
-          v-for="card in cards"
-          :key="card.title"
+          v-for="word in words"
+          :key="word.title"
           cols="12"
         >
-          <v-card @click="openModal(card)">
-            <v-card-title
-              class="fill-height align-end"
-              v-text="card.title"
-            />
-            <v-card-actions>
-              <div class="flex-grow-1" />
-
-              <v-btn icon>
-                <v-icon>thumb_up_alt</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>save_alt</v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
+          <Word
+            :word="word"
+            is-action
+            @set="openModal"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -41,18 +32,33 @@
 <script>
 import SearchBar from '@/components/home/SearchBar.vue';
 import Chips from '@/components/common/Chips.vue';
+import Word from '@/components/common/Word.vue';
 import WordDetail from '@/components/common/WordDetail.vue';
+import SelectedChips from '@/components/home/SelectedChips.vue';
 
 export default {
   name: 'SearchResult',
   components: {
     SearchBar,
     Chips,
-    WordDetail
+    WordDetail,
+    Word,
+    SelectedChips
   },
-  props: ['word'],
+  props: {
+    searchWord: {
+      type: String,
+      required: true,
+      default: ''
+    },
+    selectedChips: {
+      type: Array,
+      required: false,
+      default: []
+    },
+  },
   data: () => ({
-    cards: [
+    words: [
       { title: 'Pre-fab homes', content: 'content'},
       { title: 'Favorite road trips', content: 'content'},
       { title: 'Best airlines', content: 'content'},

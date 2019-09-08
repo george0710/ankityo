@@ -1,15 +1,16 @@
 <template>
   <div class="search">
     <div
-      @click="$router.push({ name: 'SearchDetail'})"
+      @click="goToSearchBar()"
     >
       <v-text-field
-        v-model="word"
+        v-model="searchWord"
         class="mx-4"
         flat
         single-line
         label="キーワード検索"
         prepend-inner-icon="search"
+        readonly
       />
     </div>
   </div>
@@ -18,7 +19,17 @@
 <script>
 export default {
   name: 'Search',
-  props:['word'],
+  props:{
+    searchWord: {
+      type: String,
+      default: ''
+    },
+    selectedChips: {
+      type: Array,
+      required: false,
+      default: () => ([])
+    }
+  },
   data: () => ({
     tags: [
       'Work',
@@ -31,7 +42,20 @@ export default {
       'Tech',
       'Creative Writing',
     ],
-  })
+  }),
+  methods:{
+    goToSearchBar(){
+      this.$router.push(
+        {
+          name: 'SearchDetail',
+          params:{
+            searchWord:this.searchWord,
+            selectedChips:this.selectedChips
+          }
+        }
+      );
+    }
+  }
 };
 </script>
 

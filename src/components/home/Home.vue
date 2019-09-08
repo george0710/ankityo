@@ -13,13 +13,17 @@
       </h3>
     </v-layout>
     <CardSlideGroups />
-    </p>
+
+    　<v-btn @click="login">
+      ログイン
+    </v-btn>
   </div>
 </template>
 
 <script>
 import SearchBar from '@/components/home/SearchBar.vue';
 import CardSlideGroups from '@/components/common/CardSlideGroups.vue';
+import {mapAction} from 'vuex';
 
 
 export default {
@@ -27,10 +31,19 @@ export default {
   components: {
     SearchBar,
     CardSlideGroups
+  },
+  created() {
+    FastClick.attach(document.body);
+  },
+  methods: {
+    ...mapAction(['login'])
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+html{
+  touch-action: manipulation;
+}
 </style>

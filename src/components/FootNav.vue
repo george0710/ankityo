@@ -17,11 +17,15 @@
           <v-icon>home</v-icon>
         </v-btn>
 
-        <v-btn>
+        <v-btn
+          @click="$router.push({name: 'ChartContainer'})"
+        >
           <v-icon>timeline</v-icon>
         </v-btn>
 
-        <v-btn>
+        <v-btn
+          @click="$router.push({name: 'WordBook'})"
+        >
           <v-icon>book</v-icon>
         </v-btn>
 

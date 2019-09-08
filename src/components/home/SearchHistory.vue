@@ -17,7 +17,10 @@
                     v-text="item.title"
                   />
                   <v-list-item-subtitle>
-                    <Chips />
+                    <Chips
+                      :chips="historyChips"
+                      @chip-click="parentFunc"
+                    />
                   </v-list-item-subtitle>
                 </v-list-item-content>
 
@@ -79,7 +82,22 @@ export default {
         subtitle: 'We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
       },
     ],
+    historyChips:[]
   }),
+  created() {
+    this.inputSearchWord = this.searchWord;
+
+    //
+    this.historyChips.push({name:'tag1'});
+    this.historyChips.push({name:'tag2'});
+    this.historyChips.push({name:'tag3'});
+    this.historyChips.push({name:'tag4'});
+  },
+  methods:{
+    parentFunc(chip) {
+      this.$emit('chip-click',chip);
+    }
+  }
 };
 </script>
 

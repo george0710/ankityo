@@ -1,44 +1,59 @@
 <template>
-  <v-row justify="space-around">
-    <v-col
-      cols="12"
-      sm="6"
-      md="4"
+  <v-sheet
+    class="mx-auto"
+    max-width="800"
+    color="grey"
+  >
+    <v-slide-group
+      v-model="model"
     >
-      <v-sheet>
-        <v-chip-group
-          mandatory
-          active-class="primary--text"
+      <v-slide-item
+        v-for="n in 15"
+        :key="n"
+        v-slot:default="{ active }"
+      >
+        <v-card
+          color="primary"
+          class="ma-4"
         >
-          <v-chip
-            v-for="tag in tags"
-            :key="tag"
-            pill
-            label
+          <v-row
+            class="fill-height"
+            align="center"
+            justify="center"
           >
-            {{ tag }}
-          </v-chip>
-        </v-chip-group>
-      </v-sheet>
-    </v-col>
-  </v-row>
+            <v-scale-transition>
+              <Word
+                :word="word"
+                @set="openModal"
+              />
+            </v-scale-transition>
+          </v-row>
+        </v-card>
+      </v-slide-item>
+    </v-slide-group>
+    <WordDetail ref="wordModal" />
+  </v-sheet>
 </template>
 
 <script>
+import Word from '@/components/common/Word.vue';
+import WordDetail from '@/components/common/WordDetail.vue';
+
 export default {
+  name:'CardSlideGroups',
+  components:{
+    Word,
+    WordDetail
+  },
   data: () => ({
-    tags: [
-      'Work',
-      'Home Improvement',
-      'Vacation',
-      'Food',
-      'Drawers',
-      'Shopping',
-      'Art',
-      'Tech',
-      'Creative Writing',
-    ],
+    model: null,
+    word: {title:'test',content:'content'}
   }),
+  methods:{
+    openModal(word){
+      this.$refs.wordModal.open(word);
+    }
+  }
 };
 </script>
 

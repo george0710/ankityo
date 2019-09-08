@@ -12,6 +12,8 @@
 
 <script>
 import router from './router';
+import store from './store';
+
 import FootNav from '@/components/FootNav.vue';
 
 export default {
@@ -19,7 +21,8 @@ export default {
   components: {
     FootNav
   },
-  router
+  router,
+  store
 };
 </script>
 
