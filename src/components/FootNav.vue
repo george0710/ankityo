@@ -29,7 +29,9 @@
           <v-icon>book</v-icon>
         </v-btn>
 
-        <v-btn>
+        <v-btn
+          @click="$router.push({name: 'User'})"
+        >
           <v-icon>perm_identity</v-icon>
         </v-btn>
       </v-bottom-navigation>

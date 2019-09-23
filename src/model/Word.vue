@@ -17,40 +17,45 @@ export default {
     findByIdWord(id) {
       return this.col.doc(id).get();
     },
-    // tagsは ['IT' => '12345678', '英語' => '']みたいな感じで、''の場合は未登録とみなす
-    addWord(id, word, tags) {
-      console.log(tags);
+    // tagsは [
+    //   id : '12345678',
+    //   name : 'IT'
+    // ],
+    // [
+    //   id : '',
+    //   name : '英語'
+    // ]
+    // みたいな感じできて、''の場合は未登録とみなす
+    async addWord(id, word, tags) {
       var _tags = tags;
       var _this = this;
 
-      _tags.filter(tag => tag.id === '').map(
-        function(tag) {
-          _this.colTag.add({
-            name: tag.name
-          })
-            .then(function(docRef) {
-              console.log('Document written with ID: ', docRef.id);
-            })
-            .catch(function(error) {
-              console.error('Error adding document: ', error);
-            });
-        }
-      );
-
-      //1. 登録済みタグかどうか調べる
-      //1. 登録済みだったら、単語、タグID　タグ名を登録
-      //1. 登録済みだったら、単語帳に登録
-
-      //1. 未登録だったら、タグを登録
-      //1. 未登録だったら、タグIDを取得
-      //1. 単語、タグID　タグ名を登録
-      //1. 単語帳に登録
-
-
       //TODO:: トランザクション
-      // this.col.add(word);
 
-      // this.colWoodBook.doc(id).collection('words').add(word);
+      //1. 未登録のハッシュタグの登録
+      await Promise.all(
+        _tags.map(async function(tag, index, array) {
+          if (tag.id !== '') return;
+          const docRef = await _this.colTag.add({
+            name: tag.name
+          });
+          tags[index].id = docRef.id;
+        })
+      );
+      //2. 単語の新規作成
+      word.tags = tags;
+      // TODO:: 単語とタグを一気に追加するときにタグのコレクション化する（現状配列で登録されている）
+
+      const docRef = await this.col.add(word);
+      word.id = docRef.id;
+
+      //3. ハッシュタグのワードコレクションに追加
+      tags.map(function(tag) {
+        _this.colTag.doc(tag.id).collection('words').add(word);
+      });
+
+      //4. 単語帳に登録
+      this.colWoodBook.doc(id).collection('words').add(word);
     },
     snapShotWord(callback){
       return this.col.onSnapshot(callback);

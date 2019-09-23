@@ -11,6 +11,7 @@ import WordList from '@/views/word/List.vue';
 import Study from '@/views/word/book/Study.vue';
 import SearchDetail from '@/views/home/search/Detail.vue';
 import SearchResult from '@/views/home/search/Result.vue';
+import User from '@/views/user/Index.vue';
 
 import Test from '@/components/Test0.vue';
 
@@ -54,6 +55,12 @@ export default new Router({
       path: '/wordbook/:id/study',
       name: 'Study',
       component: Study,
+      props: true
+    },
+    {
+      path: '/user',
+      name: 'User',
+      component: User,
       props: true
     }
     ,{

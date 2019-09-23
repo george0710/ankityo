@@ -1,12 +1,24 @@
 <template>
   <v-card @click="$emit('set',word)">
-    <v-card-title
-      class="fill-height align-end"
-      v-text="word.title"
-    />
-    <v-card-text
-      v-text="word.description"
-    />
+    <v-list-item three-line>
+      <v-list-item-content
+        style="padding-top: 0px;"
+      >
+        <div class="overline">
+          <ChipsNoAction
+            :chips="word.tags"
+          />
+        </div>
+        <v-list-item-title
+          class="headline mb-1"
+          v-text="word.title"
+        />
+        <v-list-item-subtitle
+          v-text="word.description"
+        />
+      </v-list-item-content>
+    </v-list-item>
+
     <v-card-actions v-if="isAction">
       <div class="flex-grow-1" />
       <v-btn icon>
@@ -21,8 +33,13 @@
 </template>
 
 <script>
+import ChipsNoAction from '@/components/chip/ListNoAction.vue';
+
 export default {
   name: 'Word',
+  components:{
+    ChipsNoAction
+  },
   props:{
     word:{
       type: Object,
