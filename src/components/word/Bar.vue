@@ -1,13 +1,12 @@
 <template>
   <div style="margin-bottom:56px">
     <v-app-bar
-      color="deep-purple accent-4"
-      dark
+      color="accent-4"
       fixed
     >
       <v-btn
         icon
-        @click="$router.push({name:'WordBookDetail',params:{id:id}})"
+        @click="$router.push({name:'WordBook',params:{id:id}})"
       >
         <v-icon>arrow_back_ios</v-icon>
       </v-btn>

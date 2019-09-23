@@ -1,0 +1,33 @@
+<script>
+import firebase from 'firebase';
+import 'firebase/firestore';
+
+export default {
+  name: 'WordBookModel',
+  data: () => ({
+    col: firebase.firestore().collection('word_book')
+  }),
+
+  methods: {
+    findAllWordBook() {
+      return this.col.get();
+    },
+    findByIdWordBook(id) {
+      return this.col.doc(id).get();
+    },
+    addWordBook(wordBook) {
+      this.col.add(wordBook);
+    },
+    snapShotWordBook(callback){
+      return this.col.onSnapshot(callback);
+    },
+    snapShotWordsInWordBook(id, callback){
+      return this.col.doc(id).collection('words').onSnapshot(callback);
+    }
+  }
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+</style>

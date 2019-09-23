@@ -5,7 +5,7 @@
       v-text="word.title"
     />
     <v-card-text
-      v-text="word.content"
+      v-text="word.description"
     />
     <v-card-actions v-if="isAction">
       <div class="flex-grow-1" />

@@ -17,62 +17,110 @@
                 sm="6"
                 md="4"
               >
-                <v-text-field
-                  v-model="title"
-                  label="単語名"
-                  required
-                />
-                <v-textarea
-                  v-model="description"
-                  label="説明"
-                  required
-                />
-                <v-text-field
-                  v-model="tag"
-                  label="タグ"
-                  required
-                />
-              </v-col>  
+                <v-form
+                  ref="form"
+                  v-model="valid"
+                >
+                  <v-text-field
+                    v-model="word.title"
+                    :rules="titleRules"
+                    label="単語名"
+                    required
+                  />
+                  <v-textarea
+                    v-model="word.description"
+                    :rules="descriptionRules"
+                    label="説明"
+                    required
+                  />
+                  <Tag
+                    v-model="tags"
+                    :rules="tagsRules"
+                    required
+                  />
+
+                  <v-btn
+                    color="darken-1"
+                    text
+                    @click="cancel"
+                  >
+                    キャンセル
+                  </v-btn>
+
+                  <v-btn
+                    :disabled="!valid"
+                    color="success"
+                    class="mr-4"
+                    @click="validate"
+                  >
+                    作成
+                  </v-btn>
+                </v-form>
+              </v-col>
             </v-row>
           </v-container>
         </v-card-text>
-        <v-card-actions>
-          <div class="flex-grow-1" />
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
-            キャンセル
-          </v-btn>
-          <v-btn
-            color="primary"
-            text
-            @click="submit()"
-          >
-            作成
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-row>
 </template>
 <script>
+
+import WordModel from '@/model/Word.vue';
+import Tag from '@/components/common/InputTags.vue';
+import { mapGetters } from 'vuex';
+
+
 export default {
   name:'FormWord',
+  components:{
+    Tag
+  },
+  mixins:[ WordModel ],
+
   data: () => ({
     dialog: false,
-    title: '',
-    description:'',
-    tag:''
+    word: {
+      userId: '',
+      title: '',
+      description:''
+    },
+    tags: [],
+    valid: true,
+    titleRules: [
+      v => !!v || '単語名を入力してください',
+      v => (v && v.length <= 20) || '単語名は20文字以内で入力してください',
+    ],
+    descriptionRules: [
+      v => !!v || '説明を入力してください'
+    ],
+    tagsRules: [
+      v => (v && v.length >= 1) || 'タグを選択してください'
+    ],
   }),
+  computed: {
+    ...mapGetters(['uid'])
+  },
   methods: {
     open() {
       this.dialog = true;
     },
     submit() {
+      this.word.userId = this.uid;
+      // TODO:: なんかおかしい
+      this.addWord(this.$store.state.wordBookId, this.word, this.tags.tags);
       //作成成功アラート
       this.dialog = false;
+    },
+    validate () {
+      if (this.$refs.form.validate()) {
+        this.snackbar = true;
+        this.submit();
+      }
+    },
+    cancel() {
+      this.dialog = false;
+      this.$refs.form.reset();
     }
   }
 };

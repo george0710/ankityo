@@ -2,24 +2,47 @@
   <div class="word-list">
     <WordListBar
       :id="id"
-      title="test"
+      :title="wordBook.title"
     />
+
+    <Checkbox
+      :checkbox="{
+        state : false,
+        label : '順番をランダムで出題',
+      }"
+    />
+
+    <Checkbox
+      :checkbox="{
+        state : false,
+        label : 'カード裏面を先に表示',
+      }"
+    />
+
+    <v-btn
+      rounded
+      color="primary"
+      dark
+      @click="studyStart()"
+    >
+      学習する
+    </v-btn>
+
     <v-container
       class="pa-2"
       fluid
     >
       <v-row>
         <v-col
-          v-for="card in cards"
-          :key="card.title"
+          v-for="word in words"
+          :key="word.id"
           cols="12"
+          class="padding4"
         >
-          <v-card @click="openModal(card)">
-            <v-card-title
-              class="fill-height align-end"
-              v-text="card.title"
-            />
-          </v-card>
+          <WordCard
+            :word="word.data()"
+            @set="openModal"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -37,13 +60,22 @@
 import WordModal from '@/components/word/Modal.vue';
 import WordListBar from '@/components/word/Bar';
 import AddIcon from '@/components/common/AddIcon';
+import Checkbox from '@/components/common/Checkbox.vue';
+import WordCard from '@/components/word/Card.vue';
+
+import WordBookModel from '@/model/WordBook.vue';
+import { mapActions } from 'vuex';
+
 export default {
   name: 'WordList',
   components: {
     WordModal,
     WordListBar,
-    AddIcon
+    AddIcon,
+    Checkbox,
+    WordCard
   },
+  mixins :[WordBookModel],
   props: {
     id: {
       type: String,
@@ -51,26 +83,39 @@ export default {
     }
   },
   data: () => ({
-    cards: [
-      { title: 'Pre-fab homes', content: 'content'},
-      { title: 'Favorite road trips', content: 'content'},
-      { title: 'Best airlines', content: 'content'},
-    ],
+    words: [],
     dialog: false,
     isSearchActive: false,
-    word: ''
+    wordBook: {
+      title: ''
+    }
   }),
   created() {
-    console.log(this.$props.id);
+    this.setWordBookId(this.id);
+  },
+  mounted() {
+    this.findByIdWordBook(this.id).then(doc => {
+      this.wordBook = doc.data();
+    });
+    this.snapShotWordsInWordBook(this.id, p => this.words = p.docs);
   },
   methods:{
     openModal(word){
       this.$refs.wordModal.open(word);
-    }
+    },
+    studyStart(){
+      this.$router.push({name:'Study',params:{'id':this.$props.id}});
+    },
+    ...mapActions([
+      'setWordBookId'
+    ])
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.padding4 {
+  padding: 4px;
+}
 </style>

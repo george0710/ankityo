@@ -6,7 +6,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: null
+    user: null,
+    wordBookId: ''
   },
   mutations: {
     setLoginUser(state, user) {
@@ -14,6 +15,9 @@ export default new Vuex.Store({
     },
     deleteLoginUser(state) {
       state.user = null;
+    },
+    setWordBookId(state,id){
+      state.wordBookId = id;
     }
   },
   actions: {
@@ -29,6 +33,12 @@ export default new Vuex.Store({
     },
     deleteLoginUser({commit}){
       commit('deleteLoginUser');
-    }
+    },
+    setWordBookId({commit}, id){
+      commit('setWordBookId', id);
+    },
+  },
+  getters:{
+    uid: state => state.user ? state.user.uid : null
   }
 });

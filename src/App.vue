@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import router from './router';
-import store from './store';
+import router from '@/plugins/router';
+import store from '@/plugins/store';
 
 import firebase from 'firebase';
 import {mapActions} from 'vuex';

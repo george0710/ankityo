@@ -10,7 +10,7 @@
           <span class="headline">{{ word.title }}</span>
         </v-card-title>
         <v-card-text>
-          {{ word.content }}
+          {{ word.description }}
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1" />

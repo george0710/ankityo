@@ -18,7 +18,7 @@
                 md="4"
               >
                 <v-text-field
-                  v-model="title"
+                  v-model="wordBook.title"
                   label="単語帳の名前"
                   required
                 />
@@ -48,17 +48,29 @@
   </v-row>
 </template>
 <script>
+import WordBookModel from '@/model/WordBook.vue';
+import { mapGetters } from 'vuex';
+
 export default {
   name:'FormWordBook',
+  mixins:[ WordBookModel ],
   data: () => ({
     dialog: false,
-    title: ''
+    wordBook: {
+      title: '',
+      userId: '',
+    }
   }),
+  computed: {
+    ...mapGetters(['uid'])
+  },
   methods: {
     open() {
       this.dialog = true;
     },
     submit() {
+      this.wordBook.userId = this.uid;
+      this.addWordBook(this.wordBook);
       //作成成功アラート
       this.dialog = false;
     }

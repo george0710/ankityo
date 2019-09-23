@@ -7,26 +7,33 @@
       subheader
     >
       <v-list-item
-        v-for="item in items2"
-        :key="item.title"
-        @click="$router.push({name:'WordBookDetail',params:{id:item.id}})"
+        v-for="wordBook in wordBooks"
+        :key="wordBook.id"
+        @click="$router.push(
+          {
+            name : 'WordList',
+            params : {
+              id : wordBook.id
+            }
+          }
+        )"
       >
         <v-list-item-avatar>
           <v-icon
-            :class="[item.iconClass]"
-            v-text="item.icon"
-          />
+            class="blue white--text"
+          >
+            assignment
+          </v-icon>
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title v-text="item.title" />
-          <v-list-item-subtitle v-text="item.subtitle" />
+          <v-list-item-title v-text="wordBook.data().title" />
         </v-list-item-content>
 
         <v-list-item-action>
           <v-btn icon>
             <v-icon color="grey lighten-1">
-              info
+              arrow_forward_ios
             </v-icon>
           </v-btn>
         </v-list-item-action>
@@ -40,18 +47,20 @@
 
 <script>
 import AddIcon from '@/components/common/AddIcon.vue';
+import WordBookModel from '@/model/WordBook.vue';
 
 export default {
   name: 'WordBook',
   components:{
     AddIcon
   },
+  mixins:[ WordBookModel ],
   data: () => ({
-    items2: [
-      { id:'1', icon: 'assignment', iconClass: 'blue white--text', title: 'Vacation itinerary', subtitle: 'Jan 20, 2014' },
-      { id:'2', icon: 'call_to_action', iconClass: 'amber white--text', title: 'Kitchen remodel', subtitle: 'Jan 10, 2014' },
-    ],
+    wordBooks: [],
   }),
+  created() {
+    this.snapShotWordBook(p => this.wordBooks = p.docs );
+  },
 };
 </script>
 
