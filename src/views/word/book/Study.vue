@@ -160,7 +160,7 @@ export default {
       this.totalNum = this.words.length || Object.keys(this.words).length;
     },
     // ページがめくられたとき発火
-    number() {
+    number(newNumber, oldNumber) {
       const activeWordId = this.words[parseInt(this.number/2)].id;
       if (activeWordId in this.$store.state.words) {
         Object.assign(this.state, this.$store.state.words[activeWordId]);
@@ -168,6 +168,10 @@ export default {
         //オブジェクトのコピー
         Object.assign(this.state , this.defaultState);
       }
+
+      // 単語名=>回答を開いたときに学習単語数をインクリメント
+      if (newNumber%2 == 1 && oldNumber < newNumber)
+        this.incrementStudyHistory();
     }
   },
   methods:{
@@ -203,7 +207,7 @@ export default {
       this.setWord(style);
     },
     ...mapActions([
-      'setWord'
+      'setWord', 'incrementStudyHistory'
     ])
   }
 };

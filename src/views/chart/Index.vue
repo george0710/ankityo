@@ -1,47 +1,54 @@
 <template>
   <div class="container">
-    <line-chart
-      v-if="loaded"
-      :chart-data="chartdata"
-      :options="options"
-    />
+    <v-tabs
+      centered
+      grow
+    >
+      <v-tab
+        href="#tab-day"
+        style="margin-left: 0px;"
+      >
+        日ごと
+      </v-tab>
+      <v-tab
+        href="#tab-week"
+        style="margin-left: 0px;"
+      >
+        週ごと
+      </v-tab>
+      <v-tab
+        href="#tab-month"
+      >
+        月ごと
+      </v-tab>
+      <v-tab-item
+        value="tab-day"
+      >
+        <ChartDay />
+      </v-tab-item>
+      <v-tab-item
+        value="tab-week"
+      >
+        <ChartWeek />
+      </v-tab-item>
+      <v-tab-item
+        value="tab-month"
+      >
+        <ChartMonth />
+      </v-tab-item>
+    </v-tabs>
   </div>
 </template>
 
 <script>
-import LineChart from '@/components/chart/LineChart.js';
-
+import ChartDay from '@/components/chart/Day.vue';
+import ChartWeek from '@/components/chart/Week.vue';
+import ChartMonth from '@/components/chart/Month.vue';
 export default {
-  name: 'LineChartContainer',
-  components: { LineChart },
-  data: () => ({
-    loaded: false,
-    chartdata: null,
-    options: null
-  }),
-  async mounted () {
-    this.loaded = false;
-    try {
-      // const { userlist } = await fetch('/api/userlist');
-      this.chartdata = {
-        labels: [this.getRandomInt(), this.getRandomInt(),this.getRandomInt(), this.getRandomInt()],
-        datasets: [
-          {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: [this.getRandomInt(), this.getRandomInt(),this.getRandomInt(), this.getRandomInt()]
-          }
-        ]
-      };
-      this.loaded = true;
-    } catch (e) {
-      console.error(e);
-    }
-  },
-  methods:{
-    getRandomInt () {
-      return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
-    }
+  components : {
+    ChartDay,
+    ChartWeek,
+    ChartMonth,
   }
 };
 </script>

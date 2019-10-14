@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import firebase from 'firebase';
+import moment from 'moment';
 
 Vue.use(Vuex);
 
@@ -17,7 +18,9 @@ export default new Vuex.Store({
     //     green: bookmark_border,
     //     yellow: bookmark,
     //   },
-    words: {}
+    words: {},
+    // 例 { 2019/10/14: 10,2019/10/15: 14,...}
+    studyHistory: {}
   },
   mutations: {
     setLoginUser(state, user) {
@@ -30,8 +33,15 @@ export default new Vuex.Store({
       state.wordBookId = id;
     },
     setWord(state, word){
-      console.log(word.id);
       state.words[word.id] = word;
+    },
+    incrementStudyHistory(state){
+      const today = moment().format('YYYY/MM/DD');
+      if (today in state.studyHistory) {
+        state.studyHistory[today]++;
+      } else {
+        state.studyHistory[today] = 1;
+      }
     },
   },
   actions: {
@@ -53,6 +63,9 @@ export default new Vuex.Store({
     },
     setWord({commit}, word){
       commit('setWord', word);
+    },
+    incrementStudyHistory({commit}){
+      commit('incrementStudyHistory');
     },
   },
   getters:{
