@@ -34,7 +34,7 @@ export default {
 
       //1. 未登録のハッシュタグの登録
       await Promise.all(
-        _tags.map(async function(tag, index, array) {
+        _tags.map(async function(tag, index) {
           if (tag.id !== '') return;
           const docRef = await _this.colTag.add({
             name: tag.name

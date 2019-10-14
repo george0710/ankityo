@@ -6,17 +6,23 @@
     />
 
     <Checkbox
-      :checkbox="{
-        state : false,
-        label : '順番をランダムで出題',
-      }"
+      :checkbox="random"
     />
 
     <Checkbox
-      :checkbox="{
-        state : false,
-        label : 'カード裏面を先に表示',
-      }"
+      :checkbox="reverse"
+    />
+
+    <Checkbox
+      :checkbox="red"
+    />
+
+    <Checkbox
+      :checkbox="yellow"
+    />
+
+    <Checkbox
+      :checkbox="green"
     />
 
     <v-btn
@@ -40,6 +46,7 @@
           class="padding4"
         >
           <WordCard
+            :word-id="word.id"
             :word="word.data()"
             @set="openModal"
           />
@@ -50,6 +57,8 @@
       ref="wordModal"
       is-word
     />
+    <Study ref="modal" />
+
     <AddIcon
       is-word
     />
@@ -62,8 +71,8 @@ import WordListBar from '@/components/word/Bar';
 import AddIcon from '@/components/common/AddIcon';
 import Checkbox from '@/components/common/Checkbox.vue';
 import WordCard from '@/components/word/Card.vue';
-
 import WordBookModel from '@/model/WordBook.vue';
+import Study from '@/views/word/book/Study.vue';
 import { mapActions } from 'vuex';
 
 export default {
@@ -73,7 +82,8 @@ export default {
     WordListBar,
     AddIcon,
     Checkbox,
-    WordCard
+    WordCard,
+    Study
   },
   mixins :[WordBookModel],
   props: {
@@ -88,7 +98,28 @@ export default {
     isSearchActive: false,
     wordBook: {
       title: ''
-    }
+    },
+    random: {
+      state : false,
+      label : '順番をランダムで出題'
+    },
+    reverse: {
+      state : false,
+      label : 'カード裏面を先に表示',
+    },
+    red: {
+      state : false,
+      label : '赤のみ表示',
+    },
+    yellow: {
+      state : false,
+      label : '黄色のみ表示',
+    },
+    green: {
+      state : false,
+      label : '青のみ表示',
+    },
+
   }),
   created() {
     this.setWordBookId(this.id);
@@ -104,7 +135,39 @@ export default {
       this.$refs.wordModal.open(word);
     },
     studyStart(){
-      this.$router.push({name:'Study',params:{'id':this.$props.id}});
+      var sendWords = this.words.concat();
+      if (this.random.state) {
+        // ランダムにシャッフル
+        sendWords = this.randomSort(sendWords);
+      }
+      if (this.red.state || this.yellow.state || this.green.state) {
+        sendWords = this.fillterWords(sendWords);
+      }
+      const option = {
+        isReverse: this.reverse.state
+      };
+
+      this.$refs.modal.open(sendWords, this.wordBook.title, option);
+    },
+    randomSort(sendWords) {
+      for(var i = sendWords.length - 1; i > 0; i--){
+        var r = Math.floor(Math.random() * (i + 1));
+        var tmp = sendWords[i];
+        sendWords[i] = sendWords[r];
+        sendWords[r] = tmp;
+      }
+      return sendWords;
+    },
+    fillterWords(sendWords) {
+      const storeWord = this.$store.state.words;
+      const _this = this;
+      return sendWords.filter(word => {
+        return word.id in storeWord && (
+          (_this.red.state && storeWord[word.id].red === 'bookmark') ||
+          (_this.yellow.state && storeWord[word.id].yellow === 'bookmark') ||
+          (_this.green.state && storeWord[word.id].green === 'bookmark')
+        );
+      });
     },
     ...mapActions([
       'setWordBookId'

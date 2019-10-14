@@ -6,6 +6,12 @@
       >
         <div class="overline">
           <ChipsNoAction
+            v-if="wordId"
+            :chips="word.tags"
+            :word-id="wordId"
+          />
+          <ChipsNoAction
+            v-if="!wordId"
             :chips="word.tags"
           />
         </div>
@@ -50,6 +56,11 @@ export default {
       type: Boolean,
       required: false,
       value: false
+    },
+    wordId:{
+      type: String,
+      required: false,
+      value: null
     },
   },
   data() {

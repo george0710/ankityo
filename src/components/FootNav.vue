@@ -1,42 +1,40 @@
 <template>
-  <v-app id="foot-nav">
-    <v-footer
-      fixed
-      padless
+  <v-footer
+    fixed
+    padless
+  >
+    <div class="flex-grow-1" />
+    <v-bottom-navigation
+      :value="activeBtn"
+      grow
+      color="teal"
+      height="48"
     >
-      <div class="flex-grow-1" />
-      <v-bottom-navigation
-        :value="activeBtn"
-        grow
-        color="teal"
-        height="48"
+      <v-btn
+        @click="$router.push({name: 'Home'})"
       >
-        <v-btn
-          @click="$router.push({name: 'Home'})"
-        >
-          <v-icon>home</v-icon>
-        </v-btn>
+        <v-icon>home</v-icon>
+      </v-btn>
 
-        <v-btn
-          @click="$router.push({name: 'ChartContainer'})"
-        >
-          <v-icon>timeline</v-icon>
-        </v-btn>
+      <v-btn
+        @click="$router.push({name: 'ChartContainer'})"
+      >
+        <v-icon>timeline</v-icon>
+      </v-btn>
 
-        <v-btn
-          @click="$router.push({name: 'WordBook'})"
-        >
-          <v-icon>book</v-icon>
-        </v-btn>
+      <v-btn
+        @click="$router.push({name: 'WordBook'})"
+      >
+        <v-icon>book</v-icon>
+      </v-btn>
 
-        <v-btn
-          @click="$router.push({name: 'User'})"
-        >
-          <v-icon>perm_identity</v-icon>
-        </v-btn>
-      </v-bottom-navigation>
-    </v-footer>
-  </v-app>
+      <v-btn
+        @click="$router.push({name: 'User'})"
+      >
+        <v-icon>perm_identity</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
+  </v-footer>
 </template>
 <script>
 export default {
@@ -49,6 +47,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>
+  <!-- Add "scoped" attribute to limit CSS to this component only -->
+  <style scoped />
+</template>

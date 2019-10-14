@@ -15,15 +15,22 @@ export default {
     findByIdWordBook(id) {
       return this.col.doc(id).get();
     },
-    addWordBook(wordBook) {
-      this.col.add(wordBook);
+    insertOrUpdate(wordBook) {  
+      if (wordBook.id) {
+        this.col.doc(wordBook.id).update(wordBook);
+      } else {
+        this.col.add(wordBook);
+      }
     },
     snapShotWordBook(callback){
       return this.col.onSnapshot(callback);
     },
     snapShotWordsInWordBook(id, callback){
       return this.col.doc(id).collection('words').onSnapshot(callback);
-    }
+    },
+    deleteWordBook(id) {
+      return this.col.doc(id).delete();
+    },
   }
 };
 </script>

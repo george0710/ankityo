@@ -2,58 +2,53 @@
   <v-row justify="center">
     <v-dialog
       v-model="dialog"
-      width="600px"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
     >
       <v-card>
-        <v-card-title>
-          <span class="headline">title</span>
-        </v-card-title>
-        <v-card-text>
-          {{ msg }}
-        </v-card-text>
-        <v-card-actions>
+        <v-toolbar
+          dark
+          color="primary"
+        >
+          <v-btn
+            icon
+            dark
+            @click="dialog = false"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Settings</v-toolbar-title>
           <div class="flex-grow-1" />
-          <v-btn
-            color="green darken-1"
-            text
-            @click="close()"
-          >
-            Disagree
-          </v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="close()"
-          >
-            Agree
-          </v-btn>
-        </v-card-actions>
+          <v-toolbar-items>
+            <v-btn
+              dark
+              text
+              @click="dialog = false"
+            >
+              Save
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+
+        <v-divider />
       </v-card>
     </v-dialog>
   </v-row>
 </template>
+
 <script>
 export default {
-  name : 'ModalTest',
   data () {
     return {
-      dialog: false,
-      msg: ''
+      dialog: false
     };
   },
-  methods: {
+  methods:{
     open(msg) {
+      console.log(msg);
       this.dialog = true;
-      this.msg = msg;
-    },
-    close() {
-      this.dialog = false;
-      this.msg = '';
-    },
+    }
   }
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>

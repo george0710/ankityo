@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 import firebase from 'firebase';
 
 Vue.use(Vuex);
@@ -7,7 +8,16 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     user: null,
-    wordBookId: ''
+    wordBookId: '',
+    // 単語に紐づく「覚えた」「あと少し」「覚えてない」の三段階のステータスの管理を行う。
+    // 例:
+    //   (id) : {
+    //     id: (id)
+    //     red: bookmark_border,
+    //     green: bookmark_border,
+    //     yellow: bookmark,
+    //   },
+    words: {}
   },
   mutations: {
     setLoginUser(state, user) {
@@ -18,7 +28,11 @@ export default new Vuex.Store({
     },
     setWordBookId(state,id){
       state.wordBookId = id;
-    }
+    },
+    setWord(state, word){
+      console.log(word.id);
+      state.words[word.id] = word;
+    },
   },
   actions: {
     login() {
@@ -37,8 +51,12 @@ export default new Vuex.Store({
     setWordBookId({commit}, id){
       commit('setWordBookId', id);
     },
+    setWord({commit}, word){
+      commit('setWord', word);
+    },
   },
   getters:{
     uid: state => state.user ? state.user.uid : null
-  }
+  },
+  plugins: [createPersistedState()]
 });

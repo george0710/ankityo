@@ -1,7 +1,10 @@
 <template>
   <v-app>
     <v-content>
-      <v-container fluid>
+      <v-container
+        fluid
+        class="bottom-up"
+      >
         <router-view />
       </v-container>
     </v-content>
@@ -54,5 +57,9 @@ export default {
 
 .main-content {
   margin: 10px;
+}
+
+.bottom-up {
+  margin-bottom: 32px;
 }
 </style>

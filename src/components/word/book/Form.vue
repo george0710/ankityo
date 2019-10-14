@@ -65,12 +65,15 @@ export default {
     ...mapGetters(['uid'])
   },
   methods: {
-    open() {
+    open(wordBook = null) {
       this.dialog = true;
+      if (wordBook) {
+        this.wordBook = wordBook;
+      }
     },
     submit() {
       this.wordBook.userId = this.uid;
-      this.addWordBook(this.wordBook);
+      this.insertOrUpdate(this.wordBook);
       //作成成功アラート
       this.dialog = false;
     }

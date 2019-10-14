@@ -104,6 +104,11 @@ export default {
   methods: {
     open() {
       this.dialog = true;
+      word = {
+        title: '',
+        description:''
+      };
+      tags = [];
     },
     submit() {
       this.word.userId = this.uid;

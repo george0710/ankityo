@@ -8,12 +8,11 @@ import Home from '@/views/home/Index.vue';
 import ChartContainer from '@/views/chart/Index.vue';
 import WordBook from '@/views/word/book/Index.vue';
 import WordList from '@/views/word/List.vue';
-import Study from '@/views/word/book/Study.vue';
 import SearchDetail from '@/views/home/search/Detail.vue';
 import SearchResult from '@/views/home/search/Result.vue';
 import User from '@/views/user/Index.vue';
 
-import Test from '@/components/Test0.vue';
+import Test from '@/components/Test.vue';
 
 export default new Router({
   // mode: 'history',
@@ -49,12 +48,6 @@ export default new Router({
       path: '/wordbook/:id/wordlist',
       name: 'WordList',
       component: WordList,
-      props: true
-    },
-    {
-      path: '/wordbook/:id/study',
-      name: 'Study',
-      component: Study,
       props: true
     },
     {
