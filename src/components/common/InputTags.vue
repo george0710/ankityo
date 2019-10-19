@@ -6,12 +6,13 @@
     hide-selected
     label="タグ"
     multiple
-    persistent-hint
     small-chips
     deletable-chips
     required
+    dense
     :rules="rules"
     @change="resetSearch"
+    @update:search-input="inputUpdate"
   />
 </template>
 
@@ -30,9 +31,10 @@ export default {
   props:['rules'],
   data: () => ({
     items: [],
+    tmpItems: [],
     tagsName: [],
     tags: [],
-    search: null,
+    search: null
   }),
   watch: {
     tagsName() {
@@ -40,7 +42,7 @@ export default {
       var _this = this;
       this.tagsName.map(
         function(tagName) {
-          var tag = _this.items.find(item => item.data().name === tagName);
+          var tag = _this.tmpItems.find(item => item.data().name === tagName);
           if (tag) {
             _this.tags.push({
               id: tag.id,
@@ -63,13 +65,21 @@ export default {
     var _this = this;
     this.findAllTag().then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
-        _this.items.push(doc);
+        _this.tmpItems.push(doc);
       });
     });
   },
   methods:{
-    resetSearch(){
+    resetSearch() {
       this.search = '';
+      this.items = [];
+    },
+    inputUpdate() {
+      if (!(this.search == '' || this.search == null)) {
+        Object.assign(this.items, this.tmpItems);
+      } else {
+        this.items = [];
+      }
     }
   }
 

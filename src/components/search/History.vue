@@ -87,7 +87,6 @@ export default {
   created() {
     this.inputSearchWord = this.searchWord;
 
-    //
     this.historyChips.push({name:'tag1'});
     this.historyChips.push({name:'tag2'});
     this.historyChips.push({name:'tag3'});

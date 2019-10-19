@@ -27,15 +27,17 @@
                     label="単語名"
                     required
                   />
+                  
+                  <Tag
+                    v-model="tags"
+                    :rules="tagsRules"
+                    required
+                  />
+
                   <v-textarea
                     v-model="word.description"
                     :rules="descriptionRules"
                     label="説明"
-                    required
-                  />
-                  <Tag
-                    v-model="tags"
-                    :rules="tagsRules"
                     required
                   />
 
@@ -104,11 +106,11 @@ export default {
   methods: {
     open() {
       this.dialog = true;
-      word = {
+      this.word = {
         title: '',
         description:''
       };
-      tags = [];
+      this.tags = [];
     },
     submit() {
       this.word.userId = this.uid;

@@ -31,11 +31,36 @@
         選択中のタグ
       </h3>
     </v-layout>
-    <Chips
-      :chips="selectedChips"
-      close
-      @chip-close="closeChip"
-    />
+    <v-layout class="justify-start">
+      <v-chip
+        @click="toggleInput"
+      >
+        <v-btn
+          icon
+        >
+          <v-icon>
+            {{ inputIconName }}
+          </v-icon>
+        </v-btn>
+      </v-chip>
+      <Chips
+        :chips="selectedChips"
+        close
+        @chip-close="closeChip"
+      />
+    </v-layout>
+    <v-layout
+      v-show="isShowInput"
+      class="justify-start"
+    >
+      <v-combobox
+        v-model="select"
+        :items="items"
+        label="タグ名を入力してください"
+        item-text="name"
+        @change="addChip"
+      />
+    </v-layout>
 
     <v-layout class="justify-start">
       <h3>
@@ -96,8 +121,26 @@ export default {
       'Creative Writing',
     ],
     inputSearchWord: '',
-    searchedChips:[]
+    searchedChips:[],
+    isShowInput: false,
+    items: [
+      {
+        name: 'Programming',
+      },{
+        name: 'Design',
+      },{
+        name: 'Vue',
+      },{
+        name: 'Vuetify',
+      }
+    ],
+    select:''
   }),
+  computed : {
+    inputIconName() {
+      return this.isShowInput ? 'remove' : 'add';
+    }
+  },
   created() {
     this.inputSearchWord = this.searchWord;
 
@@ -124,8 +167,10 @@ export default {
     },
     closeChip(index) {
       this.selectedChips.splice(index,1);
+    },
+    toggleInput() {
+      this.isShowInput = !this.isShowInput;
     }
-
   }
 };
 </script>
