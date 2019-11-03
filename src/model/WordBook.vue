@@ -9,13 +9,14 @@ export default {
   }),
 
   methods: {
-    findAllWordBook() {
-      return this.col.get();
+    async findAllWordBook() {
+      const wordBooks = await this.col.get();
+      return wordBooks.docs;
     },
     findByIdWordBook(id) {
       return this.col.doc(id).get();
     },
-    insertOrUpdate(wordBook) {  
+    insertOrUpdate(wordBook) {
       if (wordBook.id) {
         this.col.doc(wordBook.id).update(wordBook);
       } else {
@@ -30,6 +31,9 @@ export default {
     },
     deleteWordBook(id) {
       return this.col.doc(id).delete();
+    },
+    addWordToWordBook(wordBookId, word) {
+      this.col.doc(wordBookId).collection('words').add(word);
     },
   }
 };

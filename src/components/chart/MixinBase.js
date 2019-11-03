@@ -1,4 +1,3 @@
-import LineChart from '@/components/chart/LineChart.js';
 import moment from 'moment';
 
 export default {

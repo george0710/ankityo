@@ -20,20 +20,30 @@ import store from '@/plugins/store';
 import firebase from 'firebase';
 import {mapActions} from 'vuex';
 import FootNav from '@/components/FootNav.vue';
+import User from '@/model/User.vue';
 
 export default {
   name: 'App',
   components: {
     FootNav
   },
+  mixins:[User],
   router,
   store,
   created() {
     //ログインやログアウトを検知したら呼ばれるように設定する。
     firebase.auth().onAuthStateChanged(user => {
       if(user) {
-        //ログインした
         this.setLoginUser(user);
+
+        var _user = {};
+        _user.displayName = user.displayName;
+        _user.email = user.email;
+        _user.photoURL = user.photoURL;
+        _user.uid = user.uid;
+        // TODO:: 登録する必要があるかを確認する
+        // _user.refreshToken = user.refreshToken;
+        this.insertOrUpdate(_user);
       } else {
         //ログアウトした
         this.deleteLoginUser(user);

@@ -1,6 +1,9 @@
 <template>
-  <v-card @click="$emit('set',word)">
-    <v-list-item three-line>
+  <v-card>
+    <v-list-item
+      three-line
+      @click="$emit('set',word)"
+    >
       <v-list-item-content
         style="padding-top: 0px;"
       >
@@ -27,12 +30,18 @@
 
     <v-card-actions v-if="isAction">
       <div class="flex-grow-1" />
-      <v-btn icon>
-        <v-icon>thumb_up_alt</v-icon>
-      </v-btn>
-
-      <v-btn icon>
+      <v-btn
+        icon
+        @click="$emit('addWordBook',wordId)"
+      >
         <v-icon>save_alt</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        :class="{isGood: 'blue'}"
+        @click="toggleGood"
+      >
+        <v-icon>thumb_up_alt</v-icon>
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -52,22 +61,42 @@ export default {
       required: true,
       value: ''
     },
-    isAction:{
+    isAction: {
       type: Boolean,
       required: false,
       value: false
     },
-    wordId:{
+    isGoodProp: {
+      type: Boolean,
+      required: false,
+      value: false
+    },
+    wordId: {
       type: String,
       required: false,
-      value: null
+      value: ''
     },
   },
   data() {
     return {
-      dialog: false
+      dialog: false,
+      isGood: false,
     };
+  },
+  created() {
+    this.isGood = this.isGoodProp;
+  },
+  methods: {
+    toggleGood() {
+      this.isGood = !this.isGood;
+      if (this.isGood) {
+        this.$emit('addGood',this.wordId);
+      } else {
+        this.$emit('removeGood',this.worId);
+      }
+    }
   }
+
 };
 </script>
 
