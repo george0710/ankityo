@@ -15,7 +15,7 @@ import User from '@/views/user/Index.vue';
 import Test from '@/components/Test.vue';
 
 export default new Router({
-  // mode: 'history',
+  mode: 'history',
   routes: [
     {
       path: '/',
