@@ -19,93 +19,29 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-toolbar-title>{{ wordBookTitle }}</v-toolbar-title>
-          <div class="flex-grow-1" />
-          <v-toolbar-items>
-            <v-btn
-              dark
-              text
-              @click="dialog = false"
-            >
-              Save
-            </v-btn>
-          </v-toolbar-items>
         </v-toolbar>
-
-        <v-carousel
-          v-model="number"
-          :show-arrows="true"
-          :continuous="false"
-          hide-delimiters
-          class="word-content"
-        >
-          <div
+        <v-card-text style="margin-top: 15%;">
+          <template
             v-for="word in words"
-            :key="word.id"
+            class="position-absolute"
           >
-            <v-carousel-item
-              v-if="isReverse"
-            >
-              <v-sheet
-                color="secondary"
-                height="100%"
-                tile
-              >
-                <v-row
-                  class="fill-height word-detail"
-                  align="center"
-                  justify="center"
-                >
-                  {{ word.data().description }}
-                </v-row>
-              </v-sheet>
-            </v-carousel-item>
-            <v-carousel-item>
-              <v-sheet
-                color="primary"
-                height="100%"
-                tile
-              >
-                <v-row
-                  class="fill-height word-detail"
-                  align="center"
-                  justify="center"
-                >
-                  {{ word.data().title }}
-                </v-row>
-              </v-sheet>
-            </v-carousel-item>
-            <v-carousel-item
-              v-if="!isReverse"
-            >
-              <v-sheet
-                color="secondary"
-                height="100%"
-                tile
-              >
-                <v-row
-                  class="fill-height word-detail"
-                  align="center"
-                  justify="center"
-                >
-                  {{ word.data().description }}
-                </v-row>
-              </v-sheet>
-            </v-carousel-item>
-          </div>
-        </v-carousel>
-        <v-row
-          align="center"
-          justify="space-around"
-          style="
-              margin-right: 0px;
-              margin-left: 0px;
-          "
+            <StudyCard
+              :key="word.id"
+              :word="word.data()"
+            />
+          </template>
+        </v-card-text>
+        <v-footer
+          fixed
+          padless
         >
-          <span
-            v-for="color in colors"
-            :key="color"
+          <div class="flex-grow-1" />
+          <v-bottom-navigation
+            height="48"
           >
             <v-btn
+              v-for="color in colors"
+              :key="color"
               :color="color"
               icon
               text
@@ -117,18 +53,29 @@
                 {{ state[color] }}
               </v-icon>
             </v-btn>
-          </span>
-          {{ number | setPage }} / {{ totalNum }}
-        </v-row>
+            <v-btn
+              disabled
+            >
+              {{ number | setPage }} / {{ totalNum }}
+            </v-btn>
+          </v-bottom-navigation>
+        </v-footer>
       </v-card>
     </v-dialog>
+  </v-row>
+  </v-card>
+  </v-dialog>
   </v-row>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import StudyCard from '@/components/word/StudyCard';
 export default {
   name:'Study',
+  components:{
+    StudyCard
+  },
   filters:{
     setPage(val){
       return parseInt((val+2)/2);
@@ -223,5 +170,9 @@ export default {
 .word-detail {
   /* 次に進む矢印と文字がかぶるので、調整 */
   padding: 0 80px;
+}
+
+.position-absolute{
+  position: absolute;
 }
 </style>
