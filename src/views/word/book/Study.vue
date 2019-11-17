@@ -9,7 +9,6 @@
       <v-card>
         <v-toolbar
           dark
-          color="primary"
         >
           <v-btn
             icon
@@ -28,6 +27,7 @@
             <StudyCard
               :key="word.id"
               :word="word.data()"
+              @changeActiveCard="changeActiveCard"
             />
           </template>
         </v-card-text>
@@ -42,11 +42,12 @@
             <v-btn
               v-for="color in colors"
               :key="color"
-              :color="color"
+
               icon
               text
             >
               <v-icon
+                :color="color"
                 x-large
                 @click="changeIcon(color)"
               >
@@ -56,7 +57,7 @@
             <v-btn
               disabled
             >
-              {{ number | setPage }} / {{ totalNum }}
+              {{ totalNum - this.words.length }} / {{ totalNum }}
             </v-btn>
           </v-bottom-navigation>
         </v-footer>
@@ -78,14 +79,13 @@ export default {
   },
   filters:{
     setPage(val){
-      return parseInt((val+2)/2);
+      return this.words.length;
     }
   },
   data () {
     return {
       words: [],
       wordBookTitle: '',
-      number: 0,
       totalNum: 0,
       dialog: false,
       colors: ['red', 'yellow', 'green'],
@@ -102,56 +102,38 @@ export default {
       isReverse: false
     };
   },
-  watch:{
-    words(){
-      this.totalNum = this.words.length || Object.keys(this.words).length;
-    },
-    // ページがめくられたとき発火
-    number(newNumber, oldNumber) {
-      const activeWordId = this.words[parseInt(this.number/2)].id;
-      if (activeWordId in this.$store.state.words) {
-        Object.assign(this.state, this.$store.state.words[activeWordId]);
-      } else {
-        //オブジェクトのコピー
-        Object.assign(this.state , this.defaultState);
-      }
-
-      // 単語名=>回答を開いたときに学習単語数をインクリメント
-      if (newNumber%2 == 1 && oldNumber < newNumber)
-        this.incrementStudyHistory();
-    }
-  },
   methods:{
     open(words, wordBookTitle, option) {
       // TODO:: 二回目以降の並び替えができていない。
-      console.log(words[0].data().title);
       this.words = words;
       this.wordBookTitle = wordBookTitle;
-      // 最初から学習
-      this.number = 0;
       // 最初の単語の覚えたかステータスを設定
-      const activeWordId = this.words[parseInt(this.number/2)].id;
-      if (activeWordId in this.$store.state.words) {
-        Object.assign(this.state, this.$store.state.words[activeWordId]);
+      const activeWord= this.words.slice(-1)[0];
+      if (activeWord.id in this.$store.state.words) {
+        Object.assign(this.state, this.$store.state.words[activeWord.id]);
       }
-
       this.isReverse = option.isReverse;
       this.dialog = true;
+      this.totalNum = words.length || Object.keys(words).length;
     },
     changeIcon(color) {
-      const activeWordId = this.words[parseInt(this.number/2)].id;
+      const activeWord= this.words.slice(-1)[0];
       var style = {};
-      if ((activeWordId in this.$store.state.words)) {
-        Object.assign(style, this.$store.state.words[activeWordId]);
+      if ((activeWord.id in this.$store.state.words)) {
+        Object.assign(style, this.$store.state.words[activeWord.id]);
       } else {
         Object.assign(style, this.defaultState);
       }
       const activeColor = style[color];
       const changeColor = activeColor=='bookmark_border'?'bookmark':'bookmark_border';
-      style.id = activeWordId;
+      style.id = activeWord.id;
       style[color] = changeColor;
       this.state[color] = changeColor;
       this.setWord(style);
+    },
+    changeActiveCard() {
+      this.words.pop();
+      this.incrementStudyHistory();
     },
     ...mapActions([
       'setWord', 'incrementStudyHistory'

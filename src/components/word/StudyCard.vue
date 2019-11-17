@@ -5,13 +5,15 @@
   >
     <vue-swing
       class="pa-2"
-      @throwout="throwout"
-      @throwin="throwin"
+      :config="config"
+      @dragmove="dragmove"
+      @throwoutend="throwoutend"
     >
       <vue-flip
         active-click
         width="400px"
         height="200px"
+        class="default-card-color"
       >
         <div slot="front">
           <div
@@ -53,16 +55,32 @@ export default {
   },
   data() {
     return {
+      config: {
+        allowedDirections: [
+          VueSwing.Direction.LEFT,
+          VueSwing.Direction.RIGHT,
+        ],
+        throwOutConfidence:function (offset) {
+          // スワイプして、OK,NGの判断の領域を縮めている
+          return (offset < -150 || 150 < offset)? 1 : 0;
+        }
+      }
     };
   },
   methods:{
-    throwout(){
-      console.log(this.word);
-      console.log('throwout');
+    dragmove(e) {
+      if (VueSwing.Direction.RIGHT === e.throwDirection && e.throwOutConfidence === 1){
+        e.target.classList.add('ok-card-color');
+      } else if (VueSwing.Direction.LEFT === e.throwDirection && e.throwOutConfidence === 1) {
+        e.target.classList.add('ng-card-color');
+      } else if (e.throwOutConfidence != 1) {
+        e.target.classList.remove('ok-card-color');
+        e.target.classList.remove('ng-card-color');
+      }
     },
-    throwin(){
-      console.log('throwin');
-    }
+    throwoutend(e) {
+      this.$emit('changeActiveCard', this.word.id);
+    },
   }
 };
 </script>
@@ -74,10 +92,24 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #6cc4d7;
-  color: white;
-  border: double;
+  border: ridge;
+  border-radius: 10px;
   width: 400px;
   height: 200px;
+}
+
+.ok-card-color {
+  background-color: rgba(147, 228, 114, 0.5) !important;
+  border-radius: 10px;
+}
+
+.default-card-color {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+.ng-card-color{
+  background-color: rgba(245, 82, 87, 0.5) !important;
+  border-radius: 10px;
 }
 </style>
