@@ -8,11 +8,10 @@
     >
       <v-card>
         <v-toolbar
-          dark
+          flat
         >
           <v-btn
             icon
-            dark
             @click="dialog = false"
           >
             <v-icon>mdi-close</v-icon>
@@ -27,9 +26,24 @@
             <StudyCard
               :key="word.id"
               :word="word.data()"
+              :word-id="word.id"
               @changeActiveCard="changeActiveCard"
+              @mistakeWord="mistakeWord"
             />
           </template>
+          <v-btn
+            v-show="isStudyFinished"
+            :disabled="mistakeWords.length === 0"
+            @click="reStudyOnlyMistake"
+          >
+            間違えた問題のみ、もう一度解く
+          </v-btn>
+          <v-btn
+            v-show="isStudyFinished"
+            @click="reStudy"
+          >
+            すべての問題をもう一度解く
+          </v-btn>
         </v-card-text>
         <v-footer
           fixed
@@ -42,7 +56,6 @@
             <v-btn
               v-for="color in colors"
               :key="color"
-
               icon
               text
             >
@@ -85,6 +98,8 @@ export default {
   data () {
     return {
       words: [],
+      _words: [],
+      mistakeWords:[],
       wordBookTitle: '',
       totalNum: 0,
       dialog: false,
@@ -99,13 +114,14 @@ export default {
         'yellow': 'bookmark_border',
         'green': 'bookmark_border'
       },
-      isReverse: false
+      isStudyFinished: false,
     };
   },
   methods:{
     open(words, wordBookTitle, option) {
       // TODO:: 二回目以降の並び替えができていない。
-      this.words = words;
+      this.words = [...words];
+      this._words = [...words];
       this.wordBookTitle = wordBookTitle;
       // 最初の単語の覚えたかステータスを設定
       const activeWord= this.words.slice(-1)[0];
@@ -113,10 +129,11 @@ export default {
         Object.assign(this.state, this.$store.state.words[activeWord.id]);
       }
       this.isReverse = option.isReverse;
+      this.totalNum = this.getActiveWordCount();
       this.dialog = true;
-      this.totalNum = words.length || Object.keys(words).length;
     },
     changeIcon(color) {
+      //一番最後の要素を取得
       const activeWord= this.words.slice(-1)[0];
       var style = {};
       if ((activeWord.id in this.$store.state.words)) {
@@ -131,9 +148,34 @@ export default {
       this.state[color] = changeColor;
       this.setWord(style);
     },
+    mistakeWord(wordId) {
+      const word = [...this._words].filter(word => word.id === wordId);
+      this.mistakeWords.push(word[0]);
+    },
     changeActiveCard() {
       this.words.pop();
+      this.isStudyFinished = this.getActiveWordCount() === 0;
       this.incrementStudyHistory();
+      const activeWord= this.words.slice(-1)[0];
+      if (activeWord.id in this.$store.state.words) {
+        Object.assign(this.state, this.$store.state.words[activeWord.id]);
+      }
+    },
+    reStudyOnlyMistake() {
+      this.words = [...this.mistakeWords];
+      this.resetStudyStatus();
+    },
+    reStudy() {
+      this.words = [...this._words];
+      this.resetStudyStatus();
+    },
+    resetStudyStatus() {
+      this.isStudyFinished = false;
+      this.totalNum = this.getActiveWordCount();
+      this.mistakeWords = [];
+    },
+    getActiveWordCount() {
+      return this.words.length || Object.keys(this.words).length;
     },
     ...mapActions([
       'setWord', 'incrementStudyHistory'

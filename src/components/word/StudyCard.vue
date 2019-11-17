@@ -7,6 +7,7 @@
       class="pa-2"
       :config="config"
       @dragmove="dragmove"
+      @throwoutleft="throwoutleft"
       @throwoutend="throwoutend"
     >
       <vue-flip
@@ -52,6 +53,11 @@ export default {
       required: true,
       value: ''
     },
+    wordId:{
+      type: String,
+      required: true,
+      value: ''
+    },
   },
   data() {
     return {
@@ -78,8 +84,11 @@ export default {
         e.target.classList.remove('ng-card-color');
       }
     },
+    throwoutleft() {
+      this.$emit('mistakeWord', this.wordId);
+    },
     throwoutend(e) {
-      this.$emit('changeActiveCard', this.word.id);
+      this.$emit('changeActiveCard');
     },
   }
 };
