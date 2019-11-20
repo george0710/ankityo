@@ -64,7 +64,7 @@
                 x-large
                 @click="changeIcon(color)"
               >
-                {{ state[color] }}
+                {{ activeTagStatus[color] }}
               </v-icon>
             </v-btn>
             <v-btn
@@ -117,36 +117,35 @@ export default {
       isStudyFinished: false,
     };
   },
+  computed: {
+    activeWord() {
+      if (this.getActiveWordCount() === 0) return {};
+      return this.words.slice(-1)[0];
+    },
+    activeTagStatus() {
+      if (this.getActiveWordCount() === 0) return {};
+      if (this.activeWord.id in this.$store.state.words) {
+        return this.$store.state.words[this.activeWord.id];
+      } else {
+        return {...this.defaultState, 'id': this.activeWord.id};
+      }
+    }
+  },
   methods:{
     open(words, wordBookTitle, option) {
       // TODO:: 二回目以降の並び替えができていない。
       this.words = [...words];
       this._words = [...words];
       this.wordBookTitle = wordBookTitle;
-      // 最初の単語の覚えたかステータスを設定
-      const activeWord= this.words.slice(-1)[0];
-      if (activeWord.id in this.$store.state.words) {
-        Object.assign(this.state, this.$store.state.words[activeWord.id]);
-      }
-      this.isReverse = option.isReverse;
       this.totalNum = this.getActiveWordCount();
       this.dialog = true;
     },
     changeIcon(color) {
       //一番最後の要素を取得
-      const activeWord= this.words.slice(-1)[0];
-      var style = {};
-      if ((activeWord.id in this.$store.state.words)) {
-        Object.assign(style, this.$store.state.words[activeWord.id]);
-      } else {
-        Object.assign(style, this.defaultState);
-      }
-      const activeColor = style[color];
-      const changeColor = activeColor=='bookmark_border'?'bookmark':'bookmark_border';
-      style.id = activeWord.id;
-      style[color] = changeColor;
-      this.state[color] = changeColor;
-      this.setWord(style);
+      const activeTag = this.activeTagStatus[color];
+      const toggleTag = activeTag == 'bookmark_border' ? 'bookmark' : 'bookmark_border';
+      this.activeTagStatus[color] = toggleTag;
+      this.setWord(this.activeTagStatus);
     },
     mistakeWord(wordId) {
       const word = [...this._words].filter(word => word.id === wordId);
@@ -156,10 +155,6 @@ export default {
       this.words.pop();
       this.isStudyFinished = this.getActiveWordCount() === 0;
       this.incrementStudyHistory();
-      const activeWord= this.words.slice(-1)[0];
-      if (activeWord.id in this.$store.state.words) {
-        Object.assign(this.state, this.$store.state.words[activeWord.id]);
-      }
     },
     reStudyOnlyMistake() {
       this.words = [...this.mistakeWords];
